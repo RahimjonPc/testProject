@@ -60,6 +60,7 @@ class CarController extends Controller
             'message' => $car->name.' '.$car->model.' теперь свободно!',
             'data' => $car,
         ];
+        
         return response()->json($data, 200);
     }
 }

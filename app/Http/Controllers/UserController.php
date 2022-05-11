@@ -18,19 +18,4 @@ class UserController extends Controller
 
         return response()->json($data, 200);
     }
-
-    public function AddCarToUser($id, Request $request)
-    {
-        $user = User::find($id);
-        $user->car->user_id = $request->car_id;
-        $user->save();
-
-        $data = [
-            'message' => 'Машина '.$user->car->name.' успешно приклеплен к пользователю '.$user->name,
-            'data' => $user,
-        ];
-
-        return response()->json($data, 200);
-    }
-
 }
