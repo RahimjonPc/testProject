@@ -22,7 +22,6 @@ class CarController extends Controller
 
     public function AddUserToCar($id, Request $request)
     {
-        $users = User::all();
         $cars = Car::all();
         $car = Car::find($id);
 
@@ -37,7 +36,7 @@ class CarController extends Controller
                 return response()->json($data, 200);
             }
         }
-        
+
         $car->user_id = $request->user_id;
         $car->save();
 
@@ -47,6 +46,20 @@ class CarController extends Controller
             'data' => $car,
         ];
 
+        return response()->json($data, 200);
+    }
+
+    public function removeUserFromCar($id, Request $request)
+    {
+        $car = Car::find($id);
+        $car->user_id = null;
+        $car->save();
+
+        $data = [
+            'success' => true,
+            'message' => $car->name.' '.$car->model.' теперь свободно!',
+            'data' => $car,
+        ];
         return response()->json($data, 200);
     }
 }
