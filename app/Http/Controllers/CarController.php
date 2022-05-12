@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Car;
 use App\Models\User;
+use App\Http\Resources\CarResource;
+use App\Http\Resources\AddUserToCarResource;
+use App\Http\Resources\RemoveUserFromCarResource;
 
 class CarController extends Controller
 {
@@ -12,12 +15,7 @@ class CarController extends Controller
     {
         $cars = Car::with('user')->get();
 
-        $data = [
-            'success' => true,
-            'data' => $cars,
-        ];
-
-        return response()->json($data, 200);
+        return CarResource::collection($cars);
     }
 
     public function AddUserToCar($id, Request $request)
@@ -40,13 +38,8 @@ class CarController extends Controller
         $car->user_id = $request->user_id;
         $car->save();
 
-        $data = [
-            'success' => true,
-            'message' => 'Пользователь '.$car->user->name.' успешно приклеплен к машине '.$car->name,
-            'data' => $car,
-        ];
-
-        return response()->json($data, 200);
+        return new AddUserToCarResource($car);
+        // return response()->json($data, 200);
     }
 
     public function removeUserFromCar($id, Request $request)
@@ -61,6 +54,7 @@ class CarController extends Controller
             'data' => $car,
         ];
         
-        return response()->json($data, 200);
+        return new RemoveUserFromCarResource($car);
+        // return response()->json($data, 200);
     }
 }
